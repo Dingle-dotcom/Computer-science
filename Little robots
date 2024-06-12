@@ -1,0 +1,40 @@
+import Ed
+
+Ed.EdisonVersion = Ed.V2
+
+Ed.DistanceUnits = Ed.CM
+Ed.Tempo = Ed.TEMPO_MEDIUM
+
+#--------Your code below-----------
+Ed.LineTrackerLed(Ed.ON)
+
+Ed.ObstacleDetectionBeam(Ed.ON)
+SideTurn = 0
+obstacle = 0
+
+while True:
+	obstacle = Ed.ReadObstacleDetection()
+	
+	if obstacle>Ed.OBSTACLE_NONE:
+		
+		Ed.LeftLed(Ed.ON)
+		Ed.RightLed(Ed.ON)
+		Ed.PlayBeep()
+		Ed.Drive(Ed.BACKWARD, Ed.SPEED_5, 3)
+		Ed.Drive(Ed.SPIN_LEFT, Ed.SPEED_5, 45)
+		Ed.Drive(Ed.FORWARD, Ed.SPEED_10, 8)
+		Ed.Drive(Ed.SPIN_RIGHT, Ed.SPEED_5, 45)
+
+	Ed.LeftLed(Ed.OFF)
+	Ed.RightLed(Ed.OFF)
+	#change the direction varible, when no obstacle is being detected, this value changes rapidly, giving a sudo random direction when used
+	if SideTurn==1:
+		SideTurn=0
+	else:
+		SideTurn=1
+	if Ed.ReadLineState()==Ed.LINE_ON_BLACK:
+		Ed.Drive(Ed.FORWARD_RIGHT, Ed.SPEED_1, Ed.DISTANCE_UNLIMITED)
+	else:
+		Ed.Drive(Ed.FORWARD_LEFT, Ed.SPEED_1, Ed.DISTANCE_UNLIMITED)
+
+
